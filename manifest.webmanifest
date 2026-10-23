@@ -1,0 +1,11 @@
+{
+  "id": "./",
+  "name": "Reptro",
+  "short_name": "Reptro",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#17191b",
+  "theme_color": "#17191b"
+}

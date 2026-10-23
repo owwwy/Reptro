@@ -1,0 +1,18 @@
+.auth-visible{background:#272727}
+.auth-screen{position:fixed;inset:0 0 auto;height:var(--auth-height,100dvh);transform:translateY(var(--auth-top,0px));background:#272727;overflow-y:auto;overscroll-behavior:contain;z-index:50}
+.auth-content{width:min(100%,440px);min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:48px;padding:calc(34px + env(safe-area-inset-top,0px)) 32px max(34px,env(safe-area-inset-bottom,0px))}
+.auth-hero{flex:1;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:206px}
+.auth-icon{display:grid;place-items:center;width:88px;height:88px;border:1px solid #ffffff14;border-radius:24px;background:#1e1e1e;overflow:hidden;transition:height .3s cubic-bezier(.2,.8,.2,1),opacity .2s,transform .3s,margin .3s}
+.auth-heading{text-align:center;width:100%}.auth-heading p{font-size:20px;line-height:24px;color:#d4d3d475;margin-bottom:6px}.auth-heading h1{font-size:36px;line-height:36px;font-weight:400;letter-spacing:0;text-wrap:balance}
+.auth-fields{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.auth-fields input{appearance:none;display:block;min-width:0;width:100%;height:72px;padding:24px;border:0;border-radius:20px;background:#323232;color:white;outline:none!important;font-size:20px;line-height:24px;user-select:text;-webkit-user-select:text;transition:background .2s;box-shadow:none!important}
+.auth-fields input::placeholder{color:#d4d3d475;opacity:1}.auth-fields input:focus{background:#363636}.auth-fields input:focus::placeholder{color:#d4d3d43d}
+.auth-action{position:relative;flex-shrink:0}.auth-action button{width:100%;height:72px;padding:24px 16px;border-radius:20px;background:#fafafa;color:#222;font-size:20px;line-height:24px;transition:transform .18s,opacity .18s;outline:none}.auth-action button:active{transform:scale(.98)}.auth-action button:disabled{opacity:.55}
+#auth-error{font-size:13px;line-height:18px;color:#ffb1b1;margin-bottom:12px}
+.auth-focused .auth-icon{height:0;opacity:0;transform:scale(.8);margin-bottom:-16px;border-width:0}
+.auth-focused .auth-hero{min-height:102px}
+.auth-focused .auth-content{padding-bottom:34px}
+.auth-logout{align-self:flex-end;font-size:14px;color:#999;padding:8px 0}
+@media(min-width:600px){.auth-content{padding-top:88px;min-height:min(956px,var(--auth-height,100dvh))}}
+@media(max-width:374px){.auth-content{padding-left:24px;padding-right:24px;gap:32px}.auth-heading h1{font-size:30px;line-height:32px}}
+@media(max-height:500px){.auth-content{gap:24px;padding-top:20px;padding-bottom:20px}.auth-hero{min-height:102px}.auth-icon{display:none}.auth-fields input,.auth-action button{height:60px;padding-top:18px;padding-bottom:18px}}

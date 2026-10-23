@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "timezone": "Europe/Moscow",
+  "sequence": [
+    "heavy-lower",
+    "heavy-upper",
+    "light-lower",
+    "light-upper"
+  ],
+  "initialType": "heavy-lower",
+  "types": {
+    "heavy-lower": {
+      "title": "День низа",
+      "subtitle": "Тяжёлый день",
+      "exercises": [
+        {
+          "id": "vertical-pull",
+          "name": "Вертикальная тяга",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "dumbbell-row",
+          "name": "Тяга гантели",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "wide-row",
+          "name": "Широкая тяга",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "reverse-fly",
+          "name": "Обратная бабочка",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "leg-press",
+          "name": "Жим ногами",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "smith-calves",
+          "name": "Икры в Смите",
+          "sets": 4,
+          "repRange": [
+            6,
+            10
+          ],
+          "initialWeight": 0,
+          "initialReps": 6
+        },
+        {
+          "id": "hyperextension",
+          "name": "Гиперэкстензия",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        }
+      ]
+    },
+    "light-lower": {
+      "title": "День низа",
+      "subtitle": "Лёгкий день",
+      "exercises": [
+        {
+          "id": "vertical-pull",
+          "name": "Вертикальная тяга",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "dumbbell-row",
+          "name": "Тяга гантели",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "wide-row",
+          "name": "Широкая тяга",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "reverse-fly",
+          "name": "Обратная бабочка",
+          "sets": 3,
+          "repRange": [
+            12,
+            20
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        },
+        {
+          "id": "leg-press",
+          "name": "Жим ногами",
+          "sets": 3,
+          "repRange": [
+            10,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 10
+        },
+        {
+          "id": "smith-calves",
+          "name": "Икры в Смите",
+          "sets": 4,
+          "repRange": [
+            12,
+            15
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        },
+        {
+          "id": "hyperextension",
+          "name": "Гиперэкстензия",
+          "sets": 3,
+          "repRange": [
+            12,
+            15
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        }
+      ]
+    },
+    "heavy-upper": {
+      "title": "День верха",
+      "subtitle": "Тяжёлый день",
+      "exercises": [
+        {
+          "id": "bench-press",
+          "name": "Жим лёжа",
+          "sets": 4,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "dips",
+          "name": "Брусья",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "lateral-raise",
+          "name": "Махи в стороны",
+          "sets": 4,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "front-raise",
+          "name": "Подъём штанги перед собой",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "ez-curl",
+          "name": "EZ-сгибания",
+          "sets": 3,
+          "repRange": [
+            4,
+            6
+          ],
+          "initialWeight": 0,
+          "initialReps": 4
+        },
+        {
+          "id": "triceps-pushdown",
+          "name": "Разгибания на блоке",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "weighted-crunch",
+          "name": "Скручивания с весом",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        }
+      ]
+    },
+    "light-upper": {
+      "title": "День верха",
+      "subtitle": "Лёгкий день",
+      "exercises": [
+        {
+          "id": "bench-press",
+          "name": "Жим лёжа",
+          "sets": 4,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "dips",
+          "name": "Брусья",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "lateral-raise",
+          "name": "Махи в стороны",
+          "sets": 4,
+          "repRange": [
+            12,
+            20
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        },
+        {
+          "id": "front-raise",
+          "name": "Подъём штанги перед собой",
+          "sets": 3,
+          "repRange": [
+            12,
+            15
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        },
+        {
+          "id": "ez-curl",
+          "name": "EZ-сгибания",
+          "sets": 3,
+          "repRange": [
+            8,
+            12
+          ],
+          "initialWeight": 0,
+          "initialReps": 8
+        },
+        {
+          "id": "triceps-pushdown",
+          "name": "Разгибания на блоке",
+          "sets": 3,
+          "repRange": [
+            10,
+            15
+          ],
+          "initialWeight": 0,
+          "initialReps": 10
+        },
+        {
+          "id": "weighted-crunch",
+          "name": "Скручивания с весом",
+          "sets": 3,
+          "repRange": [
+            12,
+            20
+          ],
+          "initialWeight": 0,
+          "initialReps": 12
+        }
+      ]
+    }
+  }
+}

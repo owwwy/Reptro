@@ -1,0 +1,212 @@
+@font-face{font-family:Geologica;src:url('assets/geologica-regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:Geologica;src:url('assets/geologica-medium.ttf') format('truetype');font-weight:500;font-display:swap}
+:root{color-scheme:dark;--bg:#17191b;--line:rgba(255,255,255,.08);--border:rgba(255,255,255,.12)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:Geologica,sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}button{color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:focus-visible{outline:2px solid #fff;outline-offset:5px}button:disabled{cursor:default}button,img{user-select:none}button{border:0;background:none} [hidden]{display:none!important}
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+.app{width:100%;max-width:440px;margin:auto;position:fixed;inset:0 0 auto;height:100dvh;padding-top:env(safe-area-inset-top,0px);display:flex;flex-direction:column;overflow:hidden}
+main,.summary{flex:1;min-height:0;width:100%;padding:20px 20px 96px;display:flex;flex-direction:column;gap:24px;overflow-y:auto;overscroll-behavior:contain}
+main>header,.sets,.summary>header,.exercise-card{flex-shrink:0}
+.back{width:34px;height:48px;display:flex;align-items:center;padding:14px 14px 14px 0;flex-shrink:0}.back img{display:block;max-width:none}header{display:flex;flex-direction:column;gap:4px}h1,p{margin:0}h1{font-size:32px;font-weight:500;line-height:32px;letter-spacing:0}header p{font-size:18px;line-height:20px;color:rgba(255,255,255,.6);white-space:nowrap}.sets{border-top:2px solid var(--line)}.set{height:82px;display:flex;gap:8px;align-items:center;border-bottom:2px solid var(--line);padding:16px 0}.complete{width:48px;height:48px;flex-shrink:0;border-radius:50%;border:2px solid var(--border);background:rgba(255,255,255,.04);padding:0}.complete img{display:block}.complete.done{border:0;background:none}.set-space{flex:1}.value{height:48px;min-width:48px;padding:12px;border:2px solid var(--border);border-radius:8px;font-size:18px;line-height:20px;white-space:nowrap;color:rgba(255,255,255,.6)}.value.filled{color:#fff}.value.active{border-color:white}.multiply{width:20px;height:20px;flex-shrink:0}.spacer{flex:1;min-height:24px}.next{width:100%;min-height:60px;border:2px solid var(--border);border-radius:8px;font-size:18px;line-height:20px;padding:18px 8px;background:#fff;color:var(--bg);flex-shrink:0}.next:disabled{background:none;color:rgba(255,255,255,.2)}.backdrop{position:fixed;inset:0;background:rgba(23,25,27,.8);z-index:5}.picker{position:fixed;z-index:6;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,440px);height:332px;padding:60px 20px 80px;background:#202224;border-top:2px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between}.step{height:48px;width:48px;border:2px solid var(--border);border-radius:8px;font-family:Arial,sans-serif;font-size:27px;font-weight:400}.wheel{height:192px;width:200px;position:relative;font-variant-numeric:tabular-nums;overflow:hidden;flex-shrink:0;mask-image:linear-gradient(to bottom,transparent,#000 24%,#000 76%,transparent)}.weight-scroll{height:100%;width:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:60px 0;touch-action:pan-y;outline:none}.weight-scroll::-webkit-scrollbar{display:none}.weight-option{display:block;width:100%;height:72px;min-height:72px;line-height:72px;font-size:72px;font-weight:400;letter-spacing:-2px;padding:0;scroll-snap-align:center;touch-action:pan-y;font-variant-numeric:tabular-nums;outline:none}.weight-option:focus-visible{outline:none;color:#ddd}.manual{position:fixed;z-index:7;bottom:max(20px,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(calc(100% - 40px),400px)}.manual form{position:relative}.manual input{width:100%;height:112px;border-radius:12px;border:2px solid rgba(255,255,255,.04);background:#202224;color:white;text-align:center;font-size:72px;line-height:72px;outline:none;font-variant-numeric:tabular-nums;padding:12px 20px}.save-number{display:block;margin:12px 0 0 auto;font-size:16px;padding:8px 0 8px 16px}.manual p{color:#ffb1b1;font-size:14px}.toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);padding:12px 16px;border:1px solid var(--border);border-radius:8px;background:#303234;font-size:14px;z-index:10;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap}.toast.visible{opacity:1}.exercise-card{display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:24px 0;text-align:left;font-size:18px}.exercise-card span:last-child{color:#999}#result{font-size:18px;line-height:30px;color:#999}
+@media (min-width:600px){.app{padding-top:54px}}
+@media(max-width:410px){header p{font-size:16px}h1{font-size:29px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* 34px is the entire bottom gap, including the home-indicator area. */
+.next{position:absolute;z-index:2;left:20px;right:20px;width:auto;bottom:34px}
+
+html,body,.app{overflow-x:hidden}
+.picker{overflow:hidden;touch-action:pan-y}
+.weight-option{overflow:hidden;white-space:nowrap}
+
+/* Motion: short feedback on controls, softer entrances for larger surfaces. */
+:root{--spring:cubic-bezier(.22,1.28,.36,1);--ease-out:cubic-bezier(.16,1,.3,1)}
+.back,.value,.step,.next,.complete,.exercise-card{transition:transform 220ms var(--spring),background-color 180ms ease,border-color 180ms ease,color 180ms ease,opacity 180ms ease;transform-origin:center}
+.back:active,.value:active,.step:active,.exercise-card:active{transform:scale(.94)}
+.complete:active{transform:scale(.86)}
+.next:active:not(:disabled){transform:scale(.98)}
+.complete.done img{animation:check-pop 380ms var(--spring) both}
+.next:not(:disabled){animation:button-ready 400ms var(--ease-out) both}
+.backdrop:not([hidden]){animation:shade-in 250ms ease both}
+.picker:not([hidden]){animation:panel-in 430ms var(--spring) both}
+.manual:not([hidden]){animation:manual-in 300ms var(--ease-out) both}
+main:not([hidden])>header,.summary:not([hidden])>header{animation:content-in 350ms var(--ease-out) both}
+.summary:not([hidden]) .exercise-card,.summary:not([hidden]) #result{animation:content-in 420ms var(--ease-out) both}
+.picker.closing{animation:panel-out 200ms ease-in both;pointer-events:none}
+.manual.closing{animation:manual-out 180ms ease-in both;pointer-events:none}
+.backdrop.closing{animation:shade-out 200ms ease both;pointer-events:none}
+@keyframes check-pop{0%{transform:scale(.72);opacity:.3}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes button-ready{from{opacity:.5}to{opacity:1}}
+@keyframes shade-in{from{opacity:0}to{opacity:1}}
+@keyframes shade-out{from{opacity:1}to{opacity:0}}
+@keyframes panel-in{from{transform:translate(-50%,100%);opacity:.6}to{transform:translate(-50%,0);opacity:1}}
+@keyframes panel-out{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,100%);opacity:.6}}
+@keyframes manual-in{from{transform:translate(-50%,20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+@keyframes manual-out{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,20px);opacity:0}}
+@keyframes content-in{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* A real finger tap reaches the native iOS switch; do not replace it with .click(). */
+.complete{position:relative;display:block;overflow:hidden;cursor:pointer;isolation:isolate}
+.complete img{pointer-events:none}
+.set-switch{position:absolute;inset:0;margin:0;z-index:2;width:100%;height:100%;opacity:0;cursor:pointer;touch-action:manipulation}
+.complete:focus-within{outline:2px solid #fff;outline-offset:4px}
+.complete:has(.set-switch:focus:not(:focus-visible)){outline:none}
+
+.haptic-step{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;isolation:isolate;flex-shrink:0}
+.haptic-switch{position:absolute;inset:0;z-index:2;margin:0;width:100%;height:100%;opacity:0;cursor:pointer;touch-action:manipulation}
+.haptic-step span{pointer-events:none}
+.haptic-step:focus-within{outline:2px solid white;outline-offset:4px}
+.haptic-step:has(input:focus:not(:focus-visible)){outline:none}
+
+/* Interactive surfaces retarget transitions instead of restarting keyframes. */
+.value,.manual input{font-variant-numeric:tabular-nums}
+.backdrop:not([hidden]),.picker:not([hidden]),.manual:not([hidden]),
+.picker.closing,.manual.closing,.backdrop.closing{animation:none}
+.backdrop{opacity:1;transition:opacity 200ms ease}
+.picker{opacity:1;transform:translate(-50%,0);transition:transform 380ms cubic-bezier(.22,1.12,.36,1),opacity 240ms ease}
+.manual{opacity:1;transform:translate(-50%,0);transition:transform 260ms var(--ease-out),opacity 180ms ease}
+.picker.closing{transform:translate(-50%,40px);opacity:0;transition:transform 180ms ease-in,opacity 180ms ease}
+.manual.closing{transform:translate(-50%,12px);opacity:0;transition:transform 160ms ease-in,opacity 160ms ease}
+.backdrop.closing{opacity:0}
+@starting-style{
+ .backdrop:not([hidden]){opacity:0}
+ .picker:not([hidden]){transform:translate(-50%,72px);opacity:0}
+ .manual:not([hidden]){transform:translate(-50%,16px);opacity:0}
+}
+.complete.done img{animation:none}
+.complete.done img.just-checked{animation:check-reveal 300ms var(--spring) both}
+@keyframes check-reveal{from{opacity:0;transform:scale(.75);filter:blur(3px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+main:not([hidden])>header,.summary:not([hidden])>header{animation:none}
+main:not([hidden])>header h1,.summary:not([hidden])>header h1{animation:content-in 280ms var(--ease-out) both}
+main:not([hidden])>header p,.summary:not([hidden])>header p{animation:content-in 300ms var(--ease-out) 35ms both}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Clock-style cylindrical wheel: native touch momentum, projected digit faces. */
+.wheel{height:216px;mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
+.weight-scroll{padding:72px 0;scroll-snap-type:y proximity;scroll-padding:0;overflow-anchor:none}
+.weight-option{backface-visibility:hidden;transform-origin:center;position:relative}
+
+/* Progressive rim blur is driven by distance to the wheel's selected value. */
+.wheel{isolation:isolate}
+.wheel::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 34%,transparent 66%,rgba(255,255,255,.018));border-radius:18px;z-index:2}
+@media(prefers-reduced-motion:reduce){.weight-option{filter:none!important}}
+
+.weight-scroll{scroll-snap-type:none;scroll-behavior:auto}
+
+/* Exercise is a sheet over the workout, matching Figma's elevated surface. */
+#exercise{position:absolute;inset:env(safe-area-inset-top,0px) 0 0;z-index:3;background:#202224;border-top:2px solid rgba(255,255,255,.04);padding:20px 20px 34px;transform:translateY(0);opacity:1;transition:transform 360ms cubic-bezier(.22,1.08,.36,1),opacity 200ms ease}
+#exercise.sheet-closing{transform:translateY(36px);opacity:0;pointer-events:none;transition:transform 180ms ease-in,opacity 180ms ease}
+@starting-style{#exercise:not([hidden]){transform:translateY(80px);opacity:0}}
+@media(min-width:600px){#exercise{top:54px}}
+@media(prefers-reduced-motion:reduce){#exercise{transition:none}}
+
+/* Home: workout and rest variants from Figma. */
+.home{padding:20px 20px 34px;gap:24px}
+.home>header{padding:12px 0;gap:4px}
+.home>header h1,.home>header p{animation:none!important}
+.exercise-list{width:100%;flex-shrink:0;border-top:2px solid var(--line)}
+.home-exercise{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:68px;padding:22px 0 24px;border-bottom:2px solid var(--line);font-size:18px;line-height:20px;text-align:left;color:rgba(255,255,255,.8);transition:opacity 160ms ease,transform 200ms var(--spring)}
+.home-exercise:active{opacity:.55;transform:scale(.985)}
+.home-progress{color:rgba(255,255,255,.4);white-space:nowrap;font-variant-numeric:tabular-nums}
+.home-progress.all-done{color:#fff}
+.rest{flex:1;min-height:0;padding:20px 20px 34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.rest p{font-size:18px;line-height:24px}
+.rest p:first-child{color:rgba(255,255,255,.6)}
+
+.home-exercise{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:relative}
+.home-exercise.dragging{z-index:2;background:#25282b;border-radius:8px;box-shadow:0 12px 30px #0005;transition:none;opacity:1}
+.reordering .home-exercise:not(.dragging){opacity:.55}
+#exercise{touch-action:pan-x}
+#exercise .sets{touch-action:pan-y}
+#exercise.sheet-dragging{transition:none}
+#exercise.sheet-dismissed{transition:transform 220ms ease-in,opacity 180ms ease;pointer-events:none}
+
+html,body{background-color:#17191B}
+
+/* Touch-first interface: no browser focus rings, text selection, or tap flash. */
+*,*::before,*::after{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.app,.picker,.backdrop,.toast{-webkit-user-select:none;user-select:none}
+button:focus,button:focus-visible,input:focus,input:focus-visible,
+.complete:focus-within,.haptic-step:focus-within,.weight-scroll:focus,.weight-scroll:focus-visible{outline:none!important;outline-offset:0}
+::selection{background:transparent}
+
+/* Keep iOS's top-edge color sampling independent from the exercise sheet. */
+.status-bar-background{position:fixed;z-index:100;top:0;left:0;right:0;height:12px;background:#17191B;pointer-events:auto}
+
+/* The status-bar color guard covers the first 12px; draw the sheet edge below it. */
+#exercise::before{content:"";position:absolute;top:10px;left:0;right:0;height:2px;background:rgba(255,255,255,.04);pointer-events:none}
+@media(min-width:600px){#exercise::before{display:none}}
+
+/* Content-sized exercise sheet, anchored to the bottom. */
+#exercise{inset:auto 0 0;flex:none;height:auto;max-height:calc(100dvh - max(24px,env(safe-area-inset-top,0px)));min-height:0;padding:20px 20px max(34px,env(safe-area-inset-bottom,0px));border-top:2px solid rgba(255,255,255,.04)}
+#exercise>.spacer{display:none}
+#exercise::before{display:none}
+#exercise.sheet-closing{transform:translateY(36px)}
+
+.exercise-overlay{position:absolute;inset:0;z-index:2;background:rgba(23,25,27,.8);opacity:1;transition:opacity 200ms ease}
+.exercise-overlay.closing{opacity:0;pointer-events:none}
+@starting-style{.exercise-overlay:not([hidden]){opacity:0}}
+#exercise{padding-bottom:max(68px,calc(env(safe-area-inset-bottom,0px)*2))}
+@media(prefers-reduced-motion:reduce){.exercise-overlay{transition:none}}
+
+/* Updated Figma exercise sheet: values lead, completion sits on the trailing edge. */
+#exercise{padding-bottom:80px}
+#exercise .sets{border-top:0}
+#exercise .set{position:relative;height:80px;border-bottom:0;padding:16px 0}
+#exercise .set:not(:last-child){margin-bottom:2px}
+#exercise .set:not(:last-child)::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,0));pointer-events:none}
+#exercise .set>.value[data-action="weight"]{order:1}
+#exercise .set>.multiply{order:2}
+#exercise .set>.value[data-action="reps"]{order:3}
+#exercise .set>.set-space{order:4}
+#exercise .set>.complete{order:5}
+
+/* Keep validation hints above the wheel sheet, outside its controls. */
+body:has(#picker:not([hidden])) .toast{bottom:calc(332px + 16px);max-width:calc(100% - 24px);white-space:nowrap;text-align:center}
+
+.home{padding-top:32px;gap:32px}.home>header{padding:0;gap:4px}
+.progress-caption{display:flex;align-items:center;justify-content:space-between;gap:4px;width:100%;font-size:18px;line-height:20px;color:rgba(255,255,255,.6)}
+.progress-caption p{min-width:0;white-space:normal;color:inherit}
+.progress-caption>span{flex-shrink:0;font-variant-numeric:tabular-nums}
+.progress-bar{--progress:0;display:flex;gap:4px;align-items:center;width:100%;height:32px;margin-top:8px;flex-shrink:0}
+.progress-fill{position:relative;overflow:hidden;border-radius:8px;background:#c5c5c5;flex:0 0 calc((100% - 10px)*var(--progress));height:32px;transition:flex-basis 360ms var(--ease-out)}
+.progress-fill::after{content:"";position:absolute;inset:0;background:url('assets/progress-stripes.png') top left / 124px 120px;opacity:.32}
+.progress-bar>i{display:block;width:2px;height:20px;background:white;border-radius:100px;flex-shrink:0}
+.progress-remaining{flex:1;min-width:0;background:#292b2d;height:32px;border-radius:8px}
+.progress-bar.empty .progress-fill,.progress-bar.empty>i,.progress-bar.full>i,.progress-bar.full .progress-remaining{display:none}
+.progress-bar.empty,.progress-bar.full{gap:0}
+.progress-bar.full .progress-fill{flex-basis:100%}
+.stats-button{width:100%;border-radius:8px;padding:24px 8px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-size:18px;line-height:20px;flex-shrink:0}
+.stats{flex:1;min-height:0;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:24px}
+.stats dl{margin:0}.stats dl>div{display:flex;justify-content:space-between;gap:16px;padding:24px 0;border-bottom:2px solid var(--line);font-size:16px}.stats dt{color:#fff9}.stats dd{margin:0;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Statistics: dated workout cards with inline expandable set history. */
+.stats{background:#202224;border-top:2px solid rgba(255,255,255,.04);padding:20px 20px 34px;gap:24px}
+.stats>h1,.stats>.back{flex-shrink:0}
+.stats-list{display:flex;flex-direction:column;gap:12px;width:100%;flex-shrink:0}
+.workout-stat-card{padding:20px;background:#2a2c2e;border-radius:8px;display:flex;flex-direction:column;gap:12px;width:100%}
+.workout-stat-card header{gap:4px}
+.workout-stat-card h2{font-size:32px;line-height:32px;font-weight:500;margin:0}
+.workout-stat-card .progress-bar{margin-top:0}
+.workout-stat-card .progress-remaining{background:#323436}
+.stat-details{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 320ms var(--ease-out),opacity 200ms ease;margin-top:-12px}
+.stat-details.expanded{grid-template-rows:1fr;opacity:1;margin-top:0}
+.stat-details-inner{min-height:0;overflow:hidden}
+.stat-exercise{padding:20px 0 24px;border-top:2px solid var(--line)}
+.stat-exercise:last-child{border-bottom:2px solid var(--line)}
+.stat-exercise h3{font-size:24px;line-height:24px;font-weight:500;margin:0 0 8px}
+.stat-set{display:flex;align-items:center;gap:3px;font-size:18px;line-height:20px;color:rgba(255,255,255,.8);font-variant-numeric:tabular-nums}
+.stat-set+.stat-set{margin-top:8px}.stat-set img{flex-shrink:0;display:block}
+.stat-change{margin-left:12px}.stat-change.positive{color:#24c300cc}.stat-change.negative{color:#ff6060cc}
+.stats-empty{font-size:16px;color:#fff9;padding:20px 0}
+@media(prefers-reduced-motion:reduce){.stat-details{transition:none}}
+
+.set-comparison{order:4;flex-shrink:0;white-space:nowrap;margin-left:12px;font-size:18px;line-height:20px;font-variant-numeric:tabular-nums}
+#exercise .set>.set-space{order:5}#exercise .set>.complete{order:6}
+.positive{color:rgba(36,195,0,.8)}.negative{color:rgba(255,96,96,.8)}.neutral{color:rgba(255,255,255,.6)}
+.stat-set .set-comparison{margin-left:12px}
+.workout-stat-card h2{font-size:18px;line-height:20px;font-weight:400;color:rgba(255,255,255,.6)}
+.workout-stat-card .progress-caption{color:#fff}
+.stats-filter{width:100%;flex-shrink:0;border:0;border-radius:8px;background:#2a2c2e;color:#fff;padding:16px;font:inherit;font-size:18px;outline:none;color-scheme:dark}
+.workout-growth{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:14px;line-height:20px;color:rgba(255,255,255,.6)}
+.workout-growth>span:first-child{font-size:18px;font-variant-numeric:tabular-nums}

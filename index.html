@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="assets/reptro-logo.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Reptro">
+<meta name="theme-color" content="#17191b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Reptro</title>
+<link rel="stylesheet" href="style.css?v=39">
+<script type="module" src="auth.js?v=39"></script>
+<link rel="stylesheet" href="auth.css?v=39">
+</head>
+<body class="auth-visible">
+<section id="auth" class="auth-screen" aria-label="Авторизация">
+  <form id="auth-form" class="auth-content">
+    <div class="auth-hero">
+      <div class="auth-icon"><img src="assets/reptro-logo.svg" width="48" height="48" alt=""></div>
+      <div class="auth-heading"><p>Reptro</p><h1>Твой прогресс начинается здесь</h1></div>
+    </div>
+    <div class="auth-fields">
+      <input id="auth-login" name="username" type="text" placeholder="Логин" aria-label="Логин" autocomplete="username" autocapitalize="none" spellcheck="false" enterkeyhint="next" required>
+      <input id="auth-password" name="password" type="password" placeholder="Пароль" aria-label="Пароль" autocomplete="current-password" enterkeyhint="go" required>
+    </div>
+    <div class="auth-action"><p id="auth-error" role="status" hidden></p><button type="submit">Продолжить</button></div>
+  </form>
+</section>
+<div class="status-bar-background" aria-hidden="true"></div>
+<div class="app" hidden>
+  <div id="exercise-overlay" class="exercise-overlay" hidden></div>
+  <main id="exercise" role="dialog" aria-modal="true" aria-label="Жим штанги лёжа" hidden>
+    <button class="back" aria-label="К тренировке"><img src="assets/arrow-left.svg" alt="" width="20" height="20"></button>
+    <header><h1>Жим штанги лёжа</h1><div class="progress-caption"><p>Превзойди прошлый результат</p><span id="exercise-percent">0%</span></div><div id="exercise-progress" class="progress-bar" role="progressbar" aria-label="Прогресс упражнения"><span class="progress-fill"></span><i></i><span class="progress-remaining"></span></div></header>
+    <div id="sets" class="sets" aria-label="Подходы"></div>
+    <div class="spacer"></div>
+  </main>
+  <section id="summary" class="summary home">
+    <header><h1>День низа</h1><div class="progress-caption"><p>Сложный день</p><span id="workout-percent">0%</span></div><div id="workout-progress" class="progress-bar" role="progressbar" aria-label="Прогресс тренировки"><span class="progress-fill"></span><i></i><span class="progress-remaining"></span></div></header>
+    <div id="exercise-list" class="exercise-list" aria-label="Упражнения тренировки"></div>
+    <div class="spacer"></div><button id="open-stats" class="stats-button">Общая статистика</button>
+  </section>
+  <section id="stats" class="stats" hidden>
+    <button id="close-stats" class="back" aria-label="К тренировке"><img src="assets/arrow-left.svg" width="20" height="20" alt=""></button>
+    <h1>Статистика</h1>
+    <select id="stats-filter" class="stats-filter" aria-label="Тип тренировки"></select>
+    <button id="toggle-stats-details" class="stats-button" aria-expanded="false">Показать подробности</button>
+    <div id="stats-list" class="stats-list"></div>
+  </section>
+</div>
+<div id="backdrop" class="backdrop" hidden></div>
+<section id="picker" class="picker" role="dialog" aria-modal="true" aria-label="Выбор веса" hidden>
+  <button class="step" id="minus" aria-label="Уменьшить вес">−</button>
+  <div class="wheel" id="wheel">
+    <div id="weight-scroll" tabindex="0" class="weight-scroll" role="listbox" aria-label="Вес в килограммах"></div>
+  </div>
+  <button class="step" id="plus" aria-label="Увеличить вес">+</button>
+</section>
+<div id="toast" class="toast" role="status"></div>
+</body>
+</html>
